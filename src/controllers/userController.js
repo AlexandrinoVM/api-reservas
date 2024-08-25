@@ -1,15 +1,21 @@
 const User = require('../models/usermodel.js')
-
+const bcrypt = require('bcryptjs')
 
 const createUser = async (req,res) =>{
-    try{
-        const{name,email,password} = req.body;
-        const user =await User.create({name,email,password})
-        res.status(200).json(user)
-    }catch(error){
-        res.status(400).json({error: 'cannot crate user'})
-    }
-}
+        try{
+                let {password} = req.body
+                const pass = await bcrypt.hash(password,10)
+                const{name,email} = req.body;
+
+                const user =await User.create({name,email,password:pass})
+                res.status(200).json(user)
+            
+            
+        }catch(error){
+            res.status(400).json({error: 'cannot crate user'})
+            }
+}   
+
 
 const getUser = async (req,res) =>{
     try{
@@ -31,16 +37,23 @@ const getUserById = async (req,res) =>{
 }
 
 const updateUser = async (req,res)=>{
+    const {email} = req.body
+    const emailexists = await User.findOne({where:{email:email}})
+    if(emailexists){
+        res.status(400).json({error: 'cannot update user with this email'})
+    }
+    else{
     try{
         const {id }= req.params
         const {name,email,password} = req.body
         const user = await User.update({name,email,password},{
             where:{id:id}
         })
-        res.status(200)
+        res.status(200).json()
     }catch(error){
         res.status(400).json({error: 'connot update this user'})
     }
+}
 }
 
 const deleteUser = async (req,res)=>{
@@ -56,6 +69,10 @@ const deleteUser = async (req,res)=>{
         res.status(400).json({error: 'cannot delete this user'})
 
     }
+}
+
+const userLogin = async (req,res)=>{
+
 }
 
 module.exports = {
