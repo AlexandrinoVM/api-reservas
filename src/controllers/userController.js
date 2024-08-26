@@ -1,16 +1,15 @@
 const User = require('../models/usermodel.js')
 const bcrypt = require('bcryptjs')
+const jwt = require('jsonwebtoken')
+require('dotenv').config()
 
 const createUser = async (req,res) =>{
         try{
                 let {password} = req.body
                 const pass = await bcrypt.hash(password,10)
                 const{name,email} = req.body;
-
                 const user =await User.create({name,email,password:pass})
                 res.status(200).json(user)
-            
-            
         }catch(error){
             res.status(400).json({error: 'cannot crate user'})
             }
@@ -37,6 +36,9 @@ const getUserById = async (req,res) =>{
 }
 
 const updateUser = async (req,res)=>{
+    const token = req.headers.authorization.split(' ')[1]
+    const decodedToken = jwt.decode(token,process.env.JWT_SECRET)
+
     const {email} = req.body
     const emailexists = await User.findOne({where:{email:email}})
     if(emailexists){
@@ -44,10 +46,9 @@ const updateUser = async (req,res)=>{
     }
     else{
     try{
-        const {id }= req.params
         const {name,email,password} = req.body
         const user = await User.update({name,email,password},{
-            where:{id:id}
+            where:{id:decodedToken.id}
         })
         res.status(200).json()
     }catch(error){
