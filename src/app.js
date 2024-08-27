@@ -4,7 +4,7 @@ const dotenv = require('dotenv')
 const router = require('./routes/userRoutes')
 //const userRoutes = require('./routes')
 const db = require('./db')
-const User = require('./models/usermodel')
+const {user,timeslot,service} = require('./models/index.js')
 
 const app = express()
 
