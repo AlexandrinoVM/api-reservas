@@ -3,6 +3,7 @@ const sequelize = require('../db.js')
 
 const Service = sequelize.define("Service",{
     id:{
+        autoIncrement:true,
         type:DataTypes.INTEGER,
         primaryKey:true,
         allowNull:false
