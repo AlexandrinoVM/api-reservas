@@ -1,6 +1,6 @@
 const jwt = require('jsonwebtoken')
 const bcrypt = require('bcryptjs')
-const User = require('../models/usermodel')
+const User = require('../models/userModel')
 const UserController = require('../controllers/userController')
 const dotenv = require('dotenv')
 dotenv.config()
@@ -36,7 +36,7 @@ const userLogin = async (req,res)=>{
                 const token = jwt.sign(
                     {id:userExists.id,name:userExists.name},
                     process.env.JWT_SECRET,
-                    {expiresIn:'5m'}
+                    {expiresIn:'300'}
                 )
                 res.status(200).json({message: 'logged',token:token})
             }

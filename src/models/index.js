@@ -1,5 +1,7 @@
-const user = require('./usermodel')
+const user = require('./userModel')
 const service = require('./seviceModel')
 const timeSlot = require('./timeSlotModel')
+const booking = require('./BookingModel')
+const payment = require('./paymentModel')
 
-module.exports ={user,service,timeSlot}
+module.exports ={user,service,timeSlot,booking,payment}

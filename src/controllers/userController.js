@@ -1,4 +1,4 @@
-const User = require('../models/usermodel.js')
+const User = require('../models/userModel.js')
 const bcrypt = require('bcryptjs')
 const jwt = require('jsonwebtoken')
 require('dotenv').config()
@@ -47,7 +47,7 @@ const updateUser = async (req,res)=>{
     else{
     try{
         const {name,email,password} = req.body
-        const user = await User.update({name,email,password},{
+        await User.update({name,email,password},{
             where:{id:decodedToken.id}
         })
         res.status(200).json()
