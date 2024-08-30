@@ -2,7 +2,7 @@ const express = require('express')
 const router = express.Router()
 const userController = require('../controllers/userController')
 const authController = require('../controllers/authController')
-const {apiMiddleware,authToken} = require('../middlewares/apiMidlleware')
+const {apiMiddleware,authToken} = require('../middlewares/authMidlleware')
 
 
 

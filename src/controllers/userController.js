@@ -7,8 +7,8 @@ const createUser = async (req,res) =>{
         try{
                 let {password} = req.body
                 const pass = await bcrypt.hash(password,10)
-                const{name,email} = req.body;
-                const user =await User.create({name,email,password:pass})
+                const{name,email,role} = req.body;
+                const user =await User.create({name,email,password:pass,role: role || 'common'})
                 res.status(200).json(user)
         }catch(error){
             res.status(400).json({error: 'cannot crate user'})
@@ -72,9 +72,7 @@ const deleteUser = async (req,res)=>{
     }
 }
 
-const userLogin = async (req,res)=>{
 
-}
 
 module.exports = {
     createUser,
