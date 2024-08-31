@@ -6,6 +6,6 @@ const isAdmin = require('../middlewares/adminMidllewere')
 const service = require('../controllers/serviceController')
 
 router.post('/',verifyToken.authToken,isAdmin,service.createService)
-
+router.get('/',service.getServices)
 
 module.exports =router

@@ -3,6 +3,9 @@ const bodyparser = require('body-parser')
 const dotenv = require('dotenv')
 const router = require('./routes/userRoutes')
 const serviceRouter = require('./routes/serviceRoute')
+const bookingRoutes= require('./routes/bookingRoute.js')
+
+
 //const userRoutes = require('./routes')
 const db = require('./db')
 const {user,timeslot,service} = require('./models/index.js')
@@ -15,6 +18,7 @@ const PORT = process.env.PORT || 3000
 app.use(bodyparser.json())
 app.use('/user',router)
 app.use('/service',serviceRouter)
+app.use('/booking',bookingRoutes)
 
 
 db.sync({ force: true }) 

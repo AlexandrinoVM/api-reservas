@@ -72,7 +72,9 @@ const deleteUser = async (req,res)=>{
     }
 }
 
-
+const booking = async (req,res) =>{
+    
+}
 
 module.exports = {
     createUser,

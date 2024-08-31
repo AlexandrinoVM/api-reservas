@@ -2,6 +2,9 @@ const {DataTypes} = require('sequelize')
 const sequelize = require('../db.js')
 const user = require('./userModel.js')
 const timeSlot = require('./timeSlotModel.js')
+const Service = require('../models/seviceModel.js')
+
+
 
 const Booking = sequelize.define('Booking',{
     id:{
@@ -23,6 +26,13 @@ const Booking = sequelize.define('Booking',{
             model: timeSlot,
             key:'id'
         } 
+    },
+    service_id: {
+        type: DataTypes.INTEGER,
+        references: {
+            model: Service,
+            key: 'id',
+        },
     },
     status:{
         type:DataTypes.STRING,
