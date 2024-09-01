@@ -18,4 +18,6 @@ const Booking = async (req,res)=>{
     }
 }
 
+
+
 module.exports = Booking

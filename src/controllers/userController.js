@@ -1,24 +1,21 @@
 const User = require('../models/userModel.js')
-const bcrypt = require('bcryptjs')
 const jwt = require('jsonwebtoken')
+const userService = require('../services/userService.js')
 require('dotenv').config()
 
 const createUser = async (req,res) =>{
-        try{
-                let {password} = req.body
-                const pass = await bcrypt.hash(password,10)
-                const{name,email,role} = req.body;
-                const user =await User.create({name,email,password:pass,role: role || 'common'})
-                res.status(200).json(user)
-        }catch(error){
-            res.status(400).json({error: 'cannot crate user'})
-            }
+    try{
+            
+        const user = await userService.createUser(req.body)
+        res.status(200).json(user)
+    }catch(error){
+        res.status(400).json({error: 'cannot crate user'})
+    }
 }   
-
 
 const getUser = async (req,res) =>{
     try{
-        const user =await User.findAll()
+        const user =await userService.getUsers()
         res.status(200).json(user)
     }catch(error){
         res.status(400).json({error: 'cannot get users'})
@@ -27,8 +24,7 @@ const getUser = async (req,res) =>{
 
 const getUserById = async (req,res) =>{
     try{
-        const id = req.params
-        const user =await User.findAll({where:{id:id}})
+        const user =await userService.getUserById(req.params)
         res.status(200).json(user)
     }catch(error){
         res.status(400).json({error: `canot get the user with id number ${id}`})
@@ -36,25 +32,14 @@ const getUserById = async (req,res) =>{
 }
 
 const updateUser = async (req,res)=>{
-    const token = req.headers.authorization.split(' ')[1]
-    const decodedToken = jwt.decode(token,process.env.JWT_SECRET)
-
-    const {email} = req.body
-    const emailexists = await User.findOne({where:{email:email}})
-    if(emailexists){
-        res.status(400).json({error: 'cannot update user with this email'})
-    }
-    else{
     try{
-        const {name,email,password} = req.body
-        await User.update({name,email,password},{
-            where:{id:decodedToken.id}
-        })
-        res.status(200).json()
+        
+        const user = await userService.updateUser(req.body,req.user.id)
+        res.status(200).json(user)
     }catch(error){
-        res.status(400).json({error: 'connot update this user'})
+        res.status(400).json({error: 'connot update this user ',error:error})
     }
-}
+
 }
 
 const deleteUser = async (req,res)=>{
