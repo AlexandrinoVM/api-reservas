@@ -20,10 +20,6 @@ const Service = sequelize.define("Service",{
     price:{
         type:DataTypes.DECIMAL,
         allowNull:false
-    },
-    avaliable_slots:{
-        type:DataTypes.INTEGER,
-        allowNull:false
     }
 
 })

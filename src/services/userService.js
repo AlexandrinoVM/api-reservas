@@ -27,7 +27,7 @@ const getUserById = async (data) => {
 const updateUser = async (data,userId)=>{
     const {name,email,password} = data
     const hashedPassword = password ? await bcrypt.hash(password, 10): undefined 
-    const user = await User.update({name,email,password:hashedPassword},{where:{id:userId}})
+    await User.update({name,email,password:hashedPassword},{where:{id:userId}})
     const updatedUser =await User.findOne({where:{id:userId}})
 
 

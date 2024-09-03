@@ -22,13 +22,14 @@ const createService = async(req,res) =>{
                     name:name,
                     price:price,
                     description:description,
-                    avaliable_slots:avaliable_slots
+                    
                 })
         
                 const ts =await timeSlot.create({
                     id_service:service.id,
                     start_time:start_time,
-                    end_time:end_time
+                    end_time:end_time,
+                    avaliable_slots:avaliable_slots
                 })  
                 res.status(200).json({service:service,timeslot:ts})
             }catch(err){

@@ -16,6 +16,9 @@ const timeSlot = sequelize.define("TimeSlot",{
             key:'id'
         }
     },
+    avaliable_slots:{
+        type:DataTypes.INTEGER,
+    },
     start_time:{
         type:DataTypes.TIME,
         allowNull:false

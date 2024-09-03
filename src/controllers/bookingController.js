@@ -1,20 +1,15 @@
-const booking = require('../models/BookingModel')
+const booking = require('../models/BookingModel');
+const timeslot = require('../models/timeSlotModel')
+const BookingService = require('../services/bookingService')
 
 
 const Booking = async (req,res)=>{
-    const {timeslot_id,service_id,status,payment_status} = req.body;
-
     try{
-        const newBooking = await booking.create({
-            user_id: req.user.id,
-            timeslot_id:timeslot_id,
-            service_id:service_id,
-            status:status,
-            payment_status:payment_status
-        })
+       
+          const newBooking =  await BookingService.Booking(req.body,req.user)
         res.status(200).json(newBooking)
     }catch(err){
-        res.status(400).json({message: 'cannot book service'})
+        return res.status(400).json({message: 'cannot book service'})
     }
 }
 
