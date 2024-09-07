@@ -14,5 +14,9 @@ const Booking = async (req,res)=>{
 }
 
 
+const updateBooking = async(req,res)=>{
+    
+}
+
 
 module.exports = Booking

@@ -1,6 +1,6 @@
+const { response } = require('express')
 const sequelize = require('../db')
-const Service = require('../models/seviceModel')
-const timeSlot = require('../models/timeSlotModel')
+const Service = require('../services/service')
 
 
 async function itemExists(name){
@@ -8,41 +8,42 @@ async function itemExists(name){
     return !!item
 }
 
-const createService = async(req,res) =>{
-    const{name,price,description,avaliable_slots,start_time,end_time} = req.body
-
-        
+const createService = async(req,res) =>{    
             try{
-                if(await itemExists(name)){
-                    return res.status(400).json({message: "service already exists"})
-                }
-
-
-                const service = await Service.create({
-                    name:name,
-                    price:price,
-                    description:description,
-                    
-                })
-        
-                const ts =await timeSlot.create({
-                    id_service:service.id,
-                    start_time:start_time,
-                    end_time:end_time,
-                    avaliable_slots:avaliable_slots
-                })  
-                res.status(200).json({service:service,timeslot:ts})
+               await Service.createService(req.body)
+                res.status(200).json({message:"service created "})
             }catch(err){
                 res.status(400).json({message:`cannot create this service`})
             }
 }
 
 const getServices = async (req,res)=>{
-    const services = await Service.findAll()
-    if(services){
+    try{
+        const services =await Service.getServices()
+        if(services.length === 0){
+            res.status(400).json({message: "no services avaliables"})
+        }
         res.status(200).json(services)
+
+    }catch(error){
+        res.status(400).json({message: "error trying to find any service"})
     }
-    res.status(400).json({message: "cannot find any service"})
+    
 }
 
-module.exports = {createService,getServices}
+
+const updateService = async(req,res)=>{
+    try{
+       response = await Service.updateService(req.body,req.params.id)
+       if(response.status === 404){
+        res.status(400).json({message:'there is no service on database'})
+       }
+        res.status(200).json({message: "service updated"})
+
+    }catch(error){
+        res.status(400).json({message:'error trying to update the service'})
+    }
+}
+
+
+module.exports = {createService,getServices,updateService}

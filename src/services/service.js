@@ -1,1 +1,62 @@
 const Service = require('../models/seviceModel')
+const timeSlot = require('../models/timeSlotModel')
+
+async function itemExists(name){
+    const item = await Service.findOne({where:{name:name}})
+    return !!item
+}
+
+const createService = async(data)=>{
+    const{name,price,description,avaliable_slots,start_time,end_time} = data
+
+                if(await itemExists(name)){
+                    return res.status(400).json({message: "service already exists"})
+                }
+
+
+                const service = await Service.create({
+                    name:name,
+                    price:price,
+                    description:description,
+                    
+                })
+        
+                const ts =await timeSlot.create({
+                    id_service:service.id,
+                    start_time:start_time,
+                    end_time:end_time,
+                    avaliable_slots:avaliable_slots
+                })  
+}
+
+const updateService = async(data,id)=>{
+    const{name,price,description,avaliable_slots,start_time,end_time} = data   
+        const auxservice = Service.findOne({where:{id:id}})
+        if (!auxservice) {
+            return { status: 404, message: "Service not found" }; // Retorna 404 se o serviço não for encontrado
+        }
+            const service = await Service.update({
+                name:name,
+                price:price,
+                description:description,
+                
+            },{where:{id:id}})
+        
+            const ts =await timeSlot.update({
+                id_service:service.id,
+                start_time:start_time,
+                end_time:end_time,
+                avaliable_slots:avaliable_slots
+            },{where:{id_service:id}})   
+                
+        
+      
+       
+}
+
+const getServices = async ()=>{
+        const services = await Service.findAll()
+        return services
+}
+
+module.exports={getServices,updateService,createService}

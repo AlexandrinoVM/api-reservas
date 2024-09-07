@@ -32,4 +32,5 @@ const Booking = async (data,user)=>{
     
 }
 
+
 module.exports = {Booking,verifySlots}

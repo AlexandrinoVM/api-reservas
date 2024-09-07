@@ -44,10 +44,7 @@ const updateUser = async (req,res)=>{
 
 const deleteUser = async (req,res)=>{
     try{
-        const { id } = req.params
-        await User.destroy({
-            where: {id:id}
-        })
+        await userService.deleteUser(req.user.id)
         res.status(200).json({message: 'user deleted'})
 
     }
@@ -57,9 +54,6 @@ const deleteUser = async (req,res)=>{
     }
 }
 
-const booking = async (req,res) =>{
-    
-}
 
 module.exports = {
     createUser,

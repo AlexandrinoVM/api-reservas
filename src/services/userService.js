@@ -33,4 +33,9 @@ const updateUser = async (data,userId)=>{
 
     return updatedUser
 }
-module.exports = {createUser,getUsers,getUserById,updateUser}
+
+const deleteUser = async(userId)=>{
+    await User.destroy({where:{id:userId}})
+
+}
+module.exports = {createUser,getUsers,getUserById,updateUser,deleteUser}
