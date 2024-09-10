@@ -1,4 +1,4 @@
-const { response } = require('express')
+
 const sequelize = require('../db')
 const Service = require('../services/service')
 
@@ -34,9 +34,9 @@ const getServices = async (req,res)=>{
 
 const updateService = async(req,res)=>{
     try{
-       response = await Service.updateService(req.body,req.params.id)
+        const response = await Service.updateService(req.body,req.params.id)
        if(response.status === 404){
-        res.status(400).json({message:'there is no service on database'})
+        return res.status(400).json({message:'there is no service on database'})
        }
         res.status(200).json({message: "service updated"})
 

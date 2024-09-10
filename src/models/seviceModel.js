@@ -12,7 +12,7 @@ const Service = sequelize.define("Service",{
         type:DataTypes.STRING,
         allowNull:false
     },
-    decription:{
+    description:{
         type:DataTypes.TEXT,
         allowNull:true
 

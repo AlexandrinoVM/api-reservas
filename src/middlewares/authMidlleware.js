@@ -14,6 +14,7 @@ const authToken = async (req,res,next)=>{
         jwt.verify(token,process.env.JWT_SECRET,(err, user)=>{
             if(err){
                res.status(400).json({messge:'invalid token'})
+               return
             }
             req.user = user;
         next()
