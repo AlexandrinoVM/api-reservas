@@ -20,7 +20,8 @@ const Service = sequelize.define("Service",{
     price:{
         type:DataTypes.DECIMAL,
         allowNull:false
-    }
+    },
+   
 
 })
 
