@@ -1,12 +1,5 @@
-
-const sequelize = require('../db')
 const Service = require('../services/service')
 
-
-async function itemExists(name){
-    const item = await Service.findOne({where:{name:name}})
-    return !!item
-}
 
 const createService = async(req,res) =>{    
             try{
@@ -21,7 +14,7 @@ const getServices = async (req,res)=>{
     try{
         const services =await Service.getServices()
         if(services.length === 0){
-            res.status(400).json({message: "no services avaliables"})
+            return res.status(400).json({message: "no services avaliables"})
         }
         res.status(200).json(services)
 
@@ -45,5 +38,18 @@ const updateService = async(req,res)=>{
     }
 }
 
+const deleteService = async (req, res) => {
+    try {
+        const response = await Service.deleteService(req);
+        if (response.status === 404) {
+            return res.status(404).json({ message: 'There is no service with this ID' });
+        }
+        res.status(200).json({ message: "Service deleted" }); 
+    } catch (error) {
+        res.status(400).json({ message: 'Error trying to delete the service', error: error.message });
+    }
+};
 
-module.exports = {createService,getServices,updateService}
+
+
+module.exports = {createService,getServices,updateService,deleteService}

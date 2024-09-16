@@ -59,4 +59,16 @@ const getServices = async ()=>{
     return services
 }
 
-module.exports={getServices,updateService,createService}
+
+const deleteService = async(data)=>{
+    const {id }= data.params
+    const serviceExists = await Service.findOne({where:{id:id}})
+    if(!serviceExists){
+        return {status:404,message:"service does not exsists"}
+    }
+    await timeSlot.destroy({where:{id_service:id}})
+    await Service.destroy({where: {id:id}})
+    return {status:200,message:"service deleted"}
+}
+
+module.exports={getServices,updateService,createService,deleteService}
