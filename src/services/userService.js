@@ -1,6 +1,6 @@
 const User = require('../models/userModel')
 const bcrypt = require('bcryptjs')
-
+const Booking = require('../models/BookingModel')
 
 const createUser = async (data) =>{
              
@@ -19,8 +19,12 @@ const getUsers = async ()=>{
 }
 
 const getUserById = async (data) => {
-    const{id} = data
-    const user = User.findOne({where:{id:id}})
+    const{id} = data.params
+    const user =await User.findOne({where:{id:id}})
+    const booking =await Booking.findOne({where:{user_id:id}})
+    if(booking){
+        return {user,booking}
+    }
     return user
 }
 

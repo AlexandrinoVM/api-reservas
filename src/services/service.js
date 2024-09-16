@@ -42,8 +42,6 @@ const updateService = async(data,id)=>{
             
         },{where:{id:id}})
 
-        
-    
         const ts =await timeSlot.update({
             id_service:id,
             start_time:start_time,

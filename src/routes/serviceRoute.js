@@ -7,7 +7,7 @@ const service = require('../controllers/serviceController')
 
 router.post('/',verifyToken.authToken,isAdmin,service.createService)
 router.get('/',service.getServices)
-router.put('/:id',verifyToken.authToken,isAdmin,service.updateService)
+router.put('/:id',verifyToken.authToken,isAdmin,service.updateServiceController)
 router.delete('/:id',verifyToken.authToken,isAdmin,service.deleteService)
 
 module.exports =router

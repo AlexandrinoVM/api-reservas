@@ -25,7 +25,7 @@ const getServices = async (req,res)=>{
 }
 
 
-const updateService = async(req,res)=>{
+const updateServiceController = async(req,res)=>{
     try{
         const response = await Service.updateService(req.body,req.params.id)
        if(response.status === 404){
@@ -34,7 +34,7 @@ const updateService = async(req,res)=>{
         res.status(200).json({message: "service updated"})
 
     }catch(error){
-        res.status(400).json({message:'error trying to update the service'})
+        res.status(400).json({message:'error trying to update the service',error:error.message})
     }
 }
 
@@ -52,4 +52,4 @@ const deleteService = async (req, res) => {
 
 
 
-module.exports = {createService,getServices,updateService,deleteService}
+module.exports = {createService,getServices,updateServiceController,deleteService}

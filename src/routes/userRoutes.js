@@ -8,7 +8,7 @@ const {apiMiddleware,authToken} = require('../middlewares/authMidlleware')
 
 router.post('/',authController.userRegister)
 router.get('/',apiMiddleware,userController.getUser)
-router.get('/:id',apiMiddleware,userController.getUserById)
+router.get('/:id',userController.getUserById)
 router.put('/',authToken,userController.updateUser)
 router.delete('/:id',apiMiddleware,userController.deleteUser)
 router.post('/login',authController.userLogin)

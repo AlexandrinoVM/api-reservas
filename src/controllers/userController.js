@@ -24,10 +24,10 @@ const getUser = async (req,res) =>{
 
 const getUserById = async (req,res) =>{
     try{
-        const user =await userService.getUserById(req.params)
-        res.status(200).json(user)
+        const user =await userService.getUserById(req)
+        res.status(200).json({user:user.user,bookings:user.booking})
     }catch(error){
-        res.status(400).json({error: `canot get the user with id number ${id}`})
+        res.status(400).json({error: `canot get the user`,error:error.message})
     }
 }
 
