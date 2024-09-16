@@ -1,8 +1,8 @@
 const booking = require('../models/BookingModel');
 const timeSlot = require('../models/timeSlotModel');
 const timeslot = require('../models/timeSlotModel');
-
-
+const Service = require('../models/seviceModel')
+const stripe = require('../config/stripe')
 
 const verifySlots = async (data)=>{
     return data > 0
@@ -31,23 +31,38 @@ const VerifyConflicts = async(user,newServiceId,newTimeSlotId)=>{
 }
 
 const Booking = async (data,user)=>{
-    const {timeslot_id,service_id,status,payment_status}  = data
+    const {timeslot_id,service_id,status,payment_status,payment_method_id}  = data
 
 
     const Timeslot = await timeslot.findOne({where:{id:timeslot_id}})
 
     if(await verifySlots(Timeslot.avaliable_slots) && !(await VerifyConflicts(user,service_id,timeslot_id))){
-        await Timeslot.update({avaliable_slots:Timeslot.avaliable_slots -1},{where:{id:timeslot_id}})
+        
     
+        const service =await Service.findOne({where:{id:service_id}})
+        const price = parseInt(service.price * 100, 10);
+        const paymentIntent = await stripe.paymentIntents.create({
+            amount: price,
+            currency: 'brl',
+            payment_method: payment_method_id,
+            confirm: true, 
+            description: `Booking for service ${service.name}`,
+            automatic_payment_methods: {
+                enabled: true,
+                allow_redirects: 'never'
+            }
+        });
 
-    const newBooking = await booking.create({
-        user_id: user.id,
-        timeslot_id:timeslot_id,
-        service_id:service_id,
-        status:status,
-        payment_status:payment_status
-    })
-    return newBooking
+        await Timeslot.update({avaliable_slots:Timeslot.avaliable_slots -1},{where:{id:timeslot_id}})
+
+        const newBooking = await booking.create({
+            user_id: user.id,
+            timeslot_id:timeslot_id,
+            service_id:service_id,
+            status:status || 'confirmed',
+            payment_status:paymentIntent.status === 'succeeded' ? 'paid' : 'pending'
+        })
+        return newBooking
     }else{
         throw new Error("No Available slots or conflict detected")
     }
