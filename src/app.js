@@ -21,15 +21,16 @@ app.use('/service',serviceRouter)
 app.use('/booking',bookingRoutes)
 
 
-db.sync({ force: true }) 
+db.sync({alter: true }) 
 .then(() => {
-  console.log(`Banco de dados conectado e tabelas criadas: ${process.env.DB_NAME}`);
+  console.log(`database sucessefully connected at port: ${process.env.DB_NAME}`);
 })
 .catch(err => {
-  console.error('Erro ao conectar com o banco de dados:', err);
+  console.error('Erro trying to connect to the database:', err);
 });
 
 
 app.listen(PORT,()=>{
     console.log(`server is running in port ${PORT}`)
 })
+ 
