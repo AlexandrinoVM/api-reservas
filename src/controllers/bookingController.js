@@ -16,9 +16,20 @@ const Booking = async (req,res)=>{
 }
 
 
-const updateBooking = async(req,res)=>{
-    
+const DeleteBooking = async(req,res)=>{
+    try{
+        const deleteBooking = await BookingService.DeleteBooking(req.body,req.user.id)
+        if(deleteBooking.status == 404){
+            return res.status(404).json({message:"error trying to delete because booking may not exist"})
+        }
+        res.status(200).json({message:"booking deleted with sucess"})
+    }catch(error){
+        res.status(400).json({message:"error trying to delete de booking",error:error.message})
+    }
+
+
+
 }
 
 
-module.exports = Booking
+module.exports = {Booking,DeleteBooking}

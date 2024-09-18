@@ -2,7 +2,8 @@ const booking = require('../models/BookingModel');
 const timeSlot = require('../models/timeSlotModel');
 const timeslot = require('../models/timeSlotModel');
 const Service = require('../models/seviceModel')
-const stripe = require('../config/stripe')
+const stripe = require('../config/stripe');
+
 
 const verifySlots = async (data)=>{
     return data > 0
@@ -69,5 +70,16 @@ const Booking = async (data,user)=>{
     
 }
 
+const DeleteBooking = async(data,userId)=>{
+    const {service_id} = data
+    const bookingExist = await booking.findOne({where:{user_id:userId,service_id:service_id}})
+    if(!bookingExist){
+        return {status:404,message:"error finding the booking"}
+    } 
+    await booking.destroy(({where:{user_id:userId,service_id:service_id}}))
+    await Timeslot.update({avaliable_slots:Timeslot.avaliable_slots +1},{where:{id:service_id}})
+    return { status: 200, message: "Booking deleted" };
 
-module.exports = {Booking,verifySlots}
+}
+
+module.exports = {Booking,DeleteBooking}
