@@ -35,9 +35,9 @@ const updateUser = async (req,res)=>{
     try{
         
         const user = await userService.updateUser(req.body,req.user.id)
-        res.status(200).json(user)
+        res.status(200).json({description:"User updated successfully",content:user})
     }catch(error){
-        res.status(400).json({error: 'connot update this user ',error:error})
+        res.status(400).json({description: "Error in request or user not found"})
     }
 
 }

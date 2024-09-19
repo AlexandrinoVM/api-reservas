@@ -11,7 +11,7 @@ function isAdmin(req,res,next){
        
         next();
     }else{
-        return res.status(403).json({message: 'not authorized'})
+        return res.status(403).json({message: 'User is not an administrator'})
     }
 }
 

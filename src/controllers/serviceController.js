@@ -1,5 +1,5 @@
 const Service = require('../services/service')
-
+const Booking = require('../models/BookingModel')
 
 const createService = async(req,res) =>{    
             try{
@@ -16,10 +16,10 @@ const getServices = async (req,res)=>{
         if(services.length === 0){
             return res.status(400).json({message: "no services avaliables"})
         }
-        res.status(200).json(services)
+        res.status(200).json({description: "Successfully retrieved services",services:services})
 
     }catch(error){
-        res.status(400).json({message: "error trying to find any service"})
+        res.status(401).json({message: "Unauthorized - User not logged in"})
     }
     
 }
@@ -40,14 +40,20 @@ const updateServiceController = async(req,res)=>{
 
 const deleteService = async (req, res) => {
     try {
-        const response = await Service.deleteService(req);
-        if (response.status === 404) {
-            return res.status(404).json({ message: 'There is no service with this ID' });
+        const bookings = await Booking.findAll({ where: { timeslot_id: req.params.id } });
+        if (bookings.length > 0) {
+          return res.status(400).json({ 
+            message: "Cannot delete the service. There are bookings associated with this timeslot." 
+          });
         }
-        res.status(200).json({ message: "Service deleted" }); 
-    } catch (error) {
-        res.status(400).json({ message: 'Error trying to delete the service', error: error.message });
-    }
+        await Service.deleteService(req.params.id);
+        res.status(200).json({ message: "Service deleted successfully" });
+      } catch (error) {
+        res.status(400).json({ 
+          message: "Error trying to delete the service", 
+          error: error.message 
+        });
+      }
 };
 
 

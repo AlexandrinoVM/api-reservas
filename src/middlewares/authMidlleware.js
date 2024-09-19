@@ -21,18 +21,9 @@ const authToken = async (req,res,next)=>{
         })
         
     }else{
-        res.status(401).json()
+        res.status(401).json({message:"user not logged in"})
     }
 }
 
-const apiMiddleware = (req,res,next) =>{
-    const apikey = req.headers['x-api-key']
-
-    if(apikey === key){
-        next()
-    }else{
-        res.status(400).json({error: 'cannot acess'})
-    }
-}
 
 module.exports = {apiMiddleware,authToken}

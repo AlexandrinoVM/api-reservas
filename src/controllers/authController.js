@@ -41,14 +41,14 @@ const userLogin = async (req,res)=>{
                 res.status(200).json({message: 'logged',token:token})
             }
             else{
-                res.status(400).json({error: 'cannot login'})
+                res.status(400).json({error: 'Unauthorized - Invalid credentials'})
             }
        }else{
-        res.status(400).json({error: 'user not found'})
+        res.status(401).json({error: 'Unauthorized - Invalid credentials'})
        }
        
     }catch(error){
-        res.status(400).json({error: 'deu errado'})
+        res.status(401).json({error: 'Unauthorized - Invalid credentials'})
     }
 }
 
