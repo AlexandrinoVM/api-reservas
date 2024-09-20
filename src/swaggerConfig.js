@@ -5,7 +5,7 @@ const swaggerOptions = {
   definition: {
     openapi: '3.0.0',
     info: {
-      title: 'Reserve-Api',
+      title: 'Booking-Api',
       version: '1.0.0',
       description: 'reserve api Documentation',
     },
