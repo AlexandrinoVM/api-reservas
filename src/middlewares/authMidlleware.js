@@ -26,4 +26,4 @@ const authToken = async (req,res,next)=>{
 }
 
 
-module.exports = {apiMiddleware,authToken}
+module.exports = {authToken}
